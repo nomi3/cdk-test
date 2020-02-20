@@ -10,7 +10,7 @@ export class CdkTestStack extends cdk.Stack {
     super(scope, id, props);
     cdk.Tag.add(this, 'use-case', 'workshop')
 
-    const tableName = 'cdk-test-table';
+    const tableName = 'cdk-test-table'
 
     // Lambdaの定義
     const cdkTestFunction = new lambda.Function(this, 'cdk-test-function', {
@@ -21,7 +21,7 @@ export class CdkTestStack extends cdk.Stack {
       // オプション項目
       functionName: 'cdk-test-function',
       environment:{
-        "TABLE_NAME": tableName
+        'TABLE_NAME': tableName
       }
     })
 
@@ -35,17 +35,15 @@ export class CdkTestStack extends cdk.Stack {
     })
 
     // API gateway→Lambdaの接続定義
-    const integration = new apigateway.LambdaIntegration(cdkTestFunction, {
-      allowTestInvoke: false
-    })
+    const integration = new apigateway.LambdaIntegration(cdkTestFunction)
     cdkTestApi.root.addMethod('POST', integration)
-    cdkTestApi.root.addMethod('GET', integration)
 
     // DynamoDBの定義
     const cdkTestTable = new dynamodb.Table(this, 'cdk-test-table', {
       // 必須の項目
       partitionKey: { name: 'user_id', type: dynamodb.AttributeType.NUMBER },
       // オプション項目
+      sortKey: { name: 'created_at', type: dynamodb.AttributeType.STRING },
       tableName: tableName
     })
 
@@ -53,7 +51,6 @@ export class CdkTestStack extends cdk.Stack {
     cdkTestFunction.addToRolePolicy(new iam.PolicyStatement({
       resources: [cdkTestTable.tableArn],
       actions: [
-        'dynamodb:GetItem',
         'dynamodb:PutItem'
       ]
     }
