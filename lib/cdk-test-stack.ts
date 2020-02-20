@@ -1,5 +1,5 @@
 import * as cdk from '@aws-cdk/core'
-// 使用するライブラリをインポート
+// ここに使用するライブラリを追記する
 import * as lambda from '@aws-cdk/aws-lambda'
 import * as apigateway from '@aws-cdk/aws-apigateway'
 import * as dynamodb from '@aws-cdk/aws-dynamodb'
@@ -8,6 +8,9 @@ import * as iam from '@aws-cdk/aws-iam'
 export class CdkTestStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    // The code that defines your stack goes here
+    // ここに生成するリソースを定義する
     cdk.Tag.add(this, 'use-case', 'workshop')
 
     const tableName = 'cdk-test-table'
