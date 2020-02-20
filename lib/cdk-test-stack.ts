@@ -37,10 +37,6 @@ export class CdkTestStack extends cdk.Stack {
       }
     })
 
-    // API gateway→Lambdaの接続定義
-    const integration = new apigateway.LambdaIntegration(cdkTestFunction)
-    cdkTestApi.root.addMethod('POST', integration)
-
     // DynamoDBの定義
     const cdkTestTable = new dynamodb.Table(this, 'cdk-test-table', {
       // 必須の項目
@@ -58,5 +54,9 @@ export class CdkTestStack extends cdk.Stack {
       ]
     }
     ))
+
+    // API gateway→Lambdaの接続定義
+    const integration = new apigateway.LambdaIntegration(cdkTestFunction)
+    cdkTestApi.root.addMethod('POST', integration)
   }
 }
